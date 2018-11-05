@@ -1,13 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
-  overview: MyString
-  release_date: 2018-11-05
-  inventory: 1
-
-two:
-  title: MyString
-  overview: MyString
-  release_date: 2018-11-05
-  inventory: 1
+movie1:
+  title: "Lord of the Rings"
+  overview: "The entire trilogy."
+  release_date: 2001-12-24
+  inventory: 3
