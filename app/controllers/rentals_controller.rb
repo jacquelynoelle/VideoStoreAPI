@@ -1,6 +1,7 @@
 require 'date'
 
 class RentalsController < ApplicationController
+
   def checkout
     rental = Rental.new(rental_params)
 
@@ -12,7 +13,7 @@ class RentalsController < ApplicationController
   end
 
   def checkin
-    rental = Rental.find_by(movie_id: params[:movie_id], customer_id: params[:customer_id])
+    rental = Rental.find_by(id: params[:id].to_i)
 
     if rental.nil?
       render json: { message: "Rental not found" }, status: :not_found
@@ -26,6 +27,6 @@ class RentalsController < ApplicationController
   private
 
     def rental_params
-      params.permit(:movie_id, :customer_id)
+      params.permit(:movie_id, :customer_id, :id, :checkout_date, :due_date)
     end
 end

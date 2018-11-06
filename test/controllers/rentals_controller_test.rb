@@ -55,6 +55,67 @@ describe RentalsController do
     end
   end
 
+  describe "checkin" do
+    let (:rental) {
+      {
+      checkout_date: 2018-11-05, due_date: 2018-11-12, customer: Customer.first, movie: Movie.first, id: Rental.first.id
+      }
+    }
+
+    it "returns rental data with valid input" do
+      expect {
+        post rental_checkin_path, params: rental
+      }.wont_change "Rental.count"
+
+      must_respond_with :ok
+
+      body = JSON.parse(response.body)
+
+      expect(body).must_be_kind_of Hash
+      expect(body).must_include "id"
+      expect(body).must_include "checkout_date"
+      expect(body).must_include "customer_id"
+      expect(body).must_include "due_date"
+      expect(body).must_include "movie_id"
+
+    end
+
+    it "renders not found if rental not found" do
+      rental["id"] = nil
+
+      post rental_checkin_path, params: rental
+
+      body = JSON.parse(response.body)
+
+      must_respond_with :not_found
+
+      expect(body["message"]).must_equal "Rental not found"
+
+
+    end
+
+    it "errrors if invalid data is received" do
+
+      post rental_checkin_path, params: rental
+
+      must_respond_with :ok
+
+      3.times do
+        post rental_checkin_path, params: rental
+      end
+
+      body = JSON.parse(response.body)
+
+      expect(body["message"]).must_equal "Could not check-in movie"
+
+      must_respond_with :bad_request
+
+    end
+
+  end
+
+#returning movie (~update)
+  #movies should go back up by one, and customer rentals should decrease by one
   # def checkin
   #   rental = Rental.find_by(movie_id: params[:movie_id], customer_id: params[:customer_id])
   #

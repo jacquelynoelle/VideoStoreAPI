@@ -82,4 +82,5 @@ describe Rental do
       expect(invalid_rental.checkin?).must_equal false
     end
   end
+
 end
