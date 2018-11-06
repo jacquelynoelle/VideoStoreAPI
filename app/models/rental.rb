@@ -34,4 +34,8 @@ class Rental < ApplicationRecord
       return false
     end
   end
+
+  def overdue?
+    return Date.today > self.due_date && self.checked_out
+  end
 end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "/movies/:id", to: "movies#show", as: "movie"
   post "/movies", to: "movies#create"
 
+  get "/rentals/overdue", to: "rentals#overdue", as: "overdues"
   post "/rentals/check-out", to: "rentals#checkout", as: "rental_checkout"
   post "/rentals/check-in", to: "rentals#checkin", as: "rental_checkin"
 end

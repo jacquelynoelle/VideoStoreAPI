@@ -5,3 +5,11 @@ rental1:
   due_date: 2018-11-12
   customer: customer1
   movie: movie1
+  checked_out: false
+
+overdue_rental:
+  checkout_date: 2018-10-05
+  due_date: 2018-10-12
+  customer: customer3
+  movie: movie2
+  checked_out: true

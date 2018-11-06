@@ -112,7 +112,31 @@ describe RentalsController do
 
     end
 
+  describe "overdue" do
+
+    it "returns a list of overdue titles" do
+
+      get overdues_path
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 1
+      expect(body[0]["title"]).must_equal movies(:movie2).title
+    end
+
+    it "returns an empty array if no overdue titles" do
+      rentals(:overdue_rental).checked_out = false
+      rentals(:overdue_rental).save
+
+      get overdues_path
+
+      body = JSON.parse(response.body)
+
+      expect(body.empty?).must_equal true
+    end
   end
+
+end
 
 #returning movie (~update)
   #movies should go back up by one, and customer rentals should decrease by one

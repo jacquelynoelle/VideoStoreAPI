@@ -83,4 +83,16 @@ describe Rental do
     end
   end
 
+  describe "overdue?" do
+    let (:overdue) {rentals(:overdue_rental)}
+
+    it "returns true if movie is overdue" do
+      expect(overdue.overdue?).must_equal true
+    end
+
+    it "returns false if movie is overdue" do
+      expect(rental.overdue?).must_equal false
+    end
+  end
+
 end
