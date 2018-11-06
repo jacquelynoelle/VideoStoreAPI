@@ -107,4 +107,27 @@ describe Customer do
       expect(valid).must_equal false
     end
   end
+
+  describe "rent_movie?" do
+    it "must add 1 to movies_checked_out_count" do
+      expect(customer.movies_checked_out_count).must_equal 1
+      expect(customer.rent_movie?).must_equal true
+      expect(customer.movies_checked_out_count).must_equal 2
+    end
+  end
+
+  describe "return_movie?" do
+    it "must subtract 1 to movies_checked_out_count" do
+      expect(customer.movies_checked_out_count).must_equal 1
+      expect(customer.return_movie?).must_equal true
+      expect(customer.movies_checked_out_count).must_equal 0
+    end
+
+    it "wont change movies_checked_out_count if customer has no current rentals" do
+      expect(customer.movies_checked_out_count).must_equal 1
+      expect(customer.return_movie?).must_equal true
+      expect(customer.movies_checked_out_count).must_equal 0
+      expect(customer.return_movie?).must_equal false
+    end
+  end
 end
