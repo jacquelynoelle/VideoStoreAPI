@@ -110,27 +110,27 @@ describe Customer do
 
   describe "rent_movie?" do
     it "must add 1 to movies_checked_out_count" do
-      expect(customer.movies_checked_out_count).must_equal 1
-      expect(customer.rent_movie?).must_equal true
-      expect(customer.movies_checked_out_count).must_equal 2
+      expect {
+        expect(customer.rent_movie?).must_equal true
+      }.must_change 'customer.movies_checked_out_count', 1
     end
   end
 
   describe "return_movie?" do
     it "must subtract 1 from movies_checked_out_count" do
-      expect(customer.movies_checked_out_count).must_equal 1
-      expect(customer.return_movie?).must_equal true
-      expect(customer.movies_checked_out_count).must_equal 0
+      expect {
+        expect(customer.return_movie?).must_equal true
+      }.must_change 'customer.movies_checked_out_count', -1
     end
 
     it "wont change movies_checked_out_count if customer has no current rentals" do
-      expect(customer.movies_checked_out_count).must_equal 1
-      expect(customer.return_movie?).must_equal true
-      expect(customer.movies_checked_out_count).must_equal 0
-      expect{
-        customer.return_movie?
+      expect {
+        expect(customer.return_movie?).must_equal true
+      }.must_change 'customer.movies_checked_out_count', -1
+
+      expect {
+        expect(customer.return_movie?).must_equal false
       }.wont_change 'customer.movies_checked_out_count'
-      expect(customer.return_movie?).must_equal false
     end
   end
 end

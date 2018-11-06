@@ -50,4 +50,36 @@ describe Rental do
       expect(valid).must_equal false
     end
   end
+
+  describe "checkout?" do
+    it "must set the checkout_date to today" do
+      new_rental = Rental.new(customer_id: Customer.first.id, movie_id: Movie.first.id)
+      expect(new_rental.checkout_date).must_be_nil
+      expect(new_rental.checkout?).must_equal true
+      expect(new_rental.checkout_date).must_equal Date.today
+    end
+
+    it "must set the due_date to one week from today" do
+      new_rental = Rental.new(customer_id: Customer.first.id, movie_id: Movie.first.id)
+      expect(new_rental.due_date).must_be_nil
+      expect(new_rental.checkout?).must_equal true
+      expect(new_rental.due_date).must_equal Date.today + 7
+    end
+
+    it "returns false when given bad inputs" do
+      invalid_Rental = Rental.new(customer_id: -1, movie_id: 1)
+      expect(invalid_Rental.checkout?).must_equal false
+    end
+  end
+
+  describe "checkin?" do
+    it "returns true when given valid inputs" do
+      expect(rental.checkin?).must_equal true
+    end
+
+    it "returns false when given bad inputs" do
+      invalid_rental = Rental.new(customer_id: -1, movie_id: 1, checkout_date: Date.today, due_date: Date.today + 7)
+      expect(invalid_rental.checkin?).must_equal false
+    end
+  end
 end

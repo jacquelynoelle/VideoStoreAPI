@@ -104,39 +104,39 @@ describe Movie do
 
   describe "checkout?" do
     it "must subtract 1 from available_inventory" do
-      expect(movie.available_inventory).must_equal 2
-      expect(movie.checkout?).must_equal true
-      expect(movie.available_inventory).must_equal 1
+      expect {
+        expect(movie.checkout?).must_equal true
+      }.must_change 'movie.available_inventory', -1
     end
 
     it "wont change available_inventory if it's currently 0" do
-      expect(movie.available_inventory).must_equal 2
-      2.times do
-        movie.checkout?
-      end
-      expect(movie.available_inventory).must_equal 0
-      expect{
-        movie.checkout?
+      expect {
+        2.times do
+          movie.checkout?
+        end
+      }.must_change 'movie.available_inventory', -2
+      
+      expect {
+        expect(movie.checkout?).must_equal false
       }.wont_change 'movie.available_inventory'
-      expect(movie.checkout?).must_equal false
     end
   end
 
   describe "checkin?" do
     it "must add 1 to available_inventory" do
-      expect(movie.available_inventory).must_equal 2
-      expect(movie.checkin?).must_equal true
-      expect(movie.available_inventory).must_equal 3
+      expect {
+        expect(movie.checkin?).must_equal true
+      }.must_change 'movie.available_inventory', 1
     end
 
     it "wont change available_inventory if it already equals inventory" do
-      expect(movie.available_inventory).must_equal 2
-      expect(movie.checkin?).must_equal true
-      expect(movie.available_inventory).must_equal movie.inventory
-      expect{
-        movie.checkin?
+      expect {
+        expect(movie.checkin?).must_equal true
+      }.must_change 'movie.available_inventory', 1
+
+      expect {
+        expect(movie.checkin?).must_equal false
       }.wont_change 'movie.available_inventory'
-      expect(movie.checkin?).must_equal false
     end
   end
 end

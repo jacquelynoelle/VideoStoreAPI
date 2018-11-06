@@ -13,8 +13,11 @@ class Rental < ApplicationRecord
   end
 
   def checkout?
-    checkout_date = Date.today
-    due_date = Date.today + 7
+    return false if customer.nil? || movie.nil?
+
+    self.checkout_date = Date.today
+    self.due_date = Date.today + 7
+
     if movie.checkout? && customer.rent_movie?
       return self.save
     else
@@ -23,6 +26,8 @@ class Rental < ApplicationRecord
   end
 
   def checkin?
+    return false if customer.nil? || movie.nil?
+
     if movie.checkin? && customer.return_movie?
       return self.save
     else
