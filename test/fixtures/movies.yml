@@ -6,3 +6,18 @@ movie1:
   release_date: 2001-12-24
   inventory: 3
   available_inventory: 2
+
+movie2:
+  title: "Lord of the Flies"
+  overview: "scary kids on deserted island"
+  release_date: 1965-12-24
+  inventory: 6
+  available_inventory: 1
+
+
+movie3:
+  title: "Star Wars"
+  overview: "The entire original trilogy."
+  release_date: 1975-12-24
+  inventory: 13
+  available_inventory: 10

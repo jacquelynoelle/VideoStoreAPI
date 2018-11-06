@@ -6,6 +6,26 @@ customer1:
   address: "123 Main Street"
   city: "Seattle"
   state: "WA"
-  postal_code: 98103
+  postal_code: 98123
+  phone: 555-555-5555
+  movies_checked_out_count: 1
+
+customer2:
+  name: "Leanne"
+  registered_at: 2016-11-10 11:05:07
+  address: "123 Main Street"
+  city: "Seattle"
+  state: "WA"
+  postal_code: 98122
+  phone: 555-555-5555
+  movies_checked_out_count: 1
+
+customer3:
+  name: "Jackie"
+  registered_at: 2013-11-05 11:05:07
+  address: "123 Main Street"
+  city: "Seattle"
+  state: "WA"
+  postal_code: 98133
   phone: 555-555-5555
   movies_checked_out_count: 1

@@ -50,6 +50,51 @@ describe MoviesController do
         expect(mov.keys.length).must_equal keys.length
       end
     end
+
+    it "can sort movies by title" do
+
+      get movies_path, params: {sort: "title"}
+
+      body = JSON.parse(response.body)
+
+      expect(body.first["title"]).must_equal movies(:movie2)["title"]
+      expect(body.last["title"]).must_equal movies(:movie3)["title"]
+    end
+
+    it "can sort movies by release_date" do
+      get movies_path, params: {sort: "release_date"}
+
+      body = JSON.parse(response.body)
+
+      expect(body.first["title"]).must_equal movies(:movie2)["title"]
+      expect(body.last["title"]).must_equal movies(:movie1)["title"]
+    end
+
+    it "can sort movies and paginate and return specified page" do
+      get movies_path, params: {sort: "release_date", n: 1, p: 3}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 1
+      expect(body.first["title"]).must_equal movies(:movie1)["title"]
+    end
+
+    it "can return a user-specified number of responses" do
+      get movies_path, params: {n: 1}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 1
+    end
+
+    it "can return a specified number of responses on specified page" do
+      get movies_path, params: {n: 1, p: 2}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 1
+      expect(body.first["title"]).must_equal movies(:movie2)["title"]
+    end
   end
 
   describe "show" do

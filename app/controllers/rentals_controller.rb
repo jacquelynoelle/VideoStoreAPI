@@ -27,6 +27,6 @@ class RentalsController < ApplicationController
   private
 
     def rental_params
-      params.permit(:movie_id, :customer_id, :id, :checkout_date, :due_date)
+      params.permit(:movie_id, :customer_id, :id, :checkout_date, :due_date, :sort, :n, :p) #sort by n (number) or p (page) or both
     end
 end
