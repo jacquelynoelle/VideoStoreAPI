@@ -26,9 +26,9 @@ class Rental < ApplicationRecord
   end
 
   def checkin?
-    return self.save if customer.nil? || movie.nil?
+    return self.save if customer.nil? || movie.nil? #return t or f if either is nil
 
-    if movie.checkin? && customer.return_movie?
+    if movie.checkin? && customer.return_movie? #if can checkin && can return movie
       return self.save
     else
       return false
