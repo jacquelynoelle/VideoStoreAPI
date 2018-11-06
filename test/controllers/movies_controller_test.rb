@@ -105,6 +105,15 @@ describe MoviesController do
       }
     }
 
+    it "is a real working route and returns JSON" do
+      # Act
+      post movies_path, params: movie_data
+
+      # Assert
+      expect(response.header['Content-Type']).must_include 'json'
+      must_respond_with :success
+    end
+
     it "creates a new movie given valid data" do
       expect {
         post movies_path, params: movie_data
@@ -125,7 +134,7 @@ describe MoviesController do
       movie_data["title"] = nil
 
       expect {
-        post movies_path, params: { movie: movie_data }
+        post movies_path, params: movie_data
       }.wont_change "Movie.count"
 
       body = JSON.parse(response.body)
