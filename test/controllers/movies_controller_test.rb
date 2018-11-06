@@ -74,8 +74,7 @@ describe MoviesController do
     end
 
     it "returns a hash with exactly the required fields" do
-      keys = %w(movie ok)
-      sub_keys = %w(available_inventory inventory overview release_date title)
+      keys = %w(available_inventory inventory overview release_date title)
 
       # Act
       get movie_path(movie.id)
@@ -86,8 +85,6 @@ describe MoviesController do
       # Assert that each
       expect(body.keys.sort).must_equal keys
       expect(body.keys.length).must_equal keys.length
-      expect(body["movie"].keys.sort).must_equal sub_keys
-      expect(body["movie"].keys.length).must_equal sub_keys.length
     end
 
     it "responds with a 404 message if no movie is found" do
@@ -110,7 +107,7 @@ describe MoviesController do
 
     it "creates a new movie given valid data" do
       expect {
-        post movies_path, params: { movie: movie_data }
+        post movies_path, params: movie_data
       }.must_change "Movie.count", 1
 
       body = JSON.parse(response.body)
