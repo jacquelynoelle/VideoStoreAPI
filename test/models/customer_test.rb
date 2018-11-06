@@ -117,7 +117,7 @@ describe Customer do
   end
 
   describe "return_movie?" do
-    it "must subtract 1 to movies_checked_out_count" do
+    it "must subtract 1 from movies_checked_out_count" do
       expect(customer.movies_checked_out_count).must_equal 1
       expect(customer.return_movie?).must_equal true
       expect(customer.movies_checked_out_count).must_equal 0
@@ -127,6 +127,9 @@ describe Customer do
       expect(customer.movies_checked_out_count).must_equal 1
       expect(customer.return_movie?).must_equal true
       expect(customer.movies_checked_out_count).must_equal 0
+      expect{
+        customer.return_movie?
+      }.wont_change 'customer.movies_checked_out_count'
       expect(customer.return_movie?).must_equal false
     end
   end

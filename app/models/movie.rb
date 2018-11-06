@@ -9,18 +9,18 @@ class Movie < ApplicationRecord
   # validates :available_inventory, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :inventory }
 
   def checkout?
-    if available_inventory >= 1
-      available_inventory -= 1
-      return movie.save
+    if self.available_inventory >= 1
+      self.available_inventory -= 1
+      return self.save
     else
       return false
     end
   end
 
   def checkin?
-    if available_inventory < inventory
-      available_inventory += 1
-      return movie.save
+    if self.available_inventory < self.inventory
+      self.available_inventory += 1
+      return self.save
     else
       return false
     end
