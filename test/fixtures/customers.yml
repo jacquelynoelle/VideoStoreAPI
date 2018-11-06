@@ -8,3 +8,4 @@ customer1:
   state: "WA"
   postal_code: 98103
   phone: 555-555-5555
+  movies_checked_out_count: 1

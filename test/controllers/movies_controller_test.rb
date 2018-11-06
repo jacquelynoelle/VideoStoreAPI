@@ -75,7 +75,7 @@ describe MoviesController do
 
     it "returns a hash with exactly the required fields" do
       keys = %w(movie ok)
-      sub_keys = %w(inventory overview release_date title available_inventory)
+      sub_keys = %w(available_inventory inventory overview release_date title)
 
       # Act
       get movie_path(movie.id)
@@ -103,7 +103,8 @@ describe MoviesController do
         title: "Pirates of the Caribbean",
         overview: "Disney movie",
         release_date: "2004-09-10",
-        inventory: 10
+        inventory: 10,
+        available_inventory: 10
       }
     }
 

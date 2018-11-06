@@ -8,4 +8,5 @@ class Customer < ApplicationRecord
   validates :state, presence: true
   validates :postal_code, presence: true
   validates :phone, presence: true
+  validates :movies_checked_out_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
 end

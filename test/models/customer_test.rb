@@ -86,5 +86,25 @@ describe Customer do
       valid = customer.valid?
       expect(valid).must_equal false
     end
+
+    it "must have a movies_checked_out_count" do
+      valid = customer.valid?
+      expect(valid).must_equal true
+
+      customer.movies_checked_out_count = nil
+      customer.save
+      valid = customer.valid?
+      expect(valid).must_equal false
+    end
+
+    it "must have an movies_checked_out_count greater than or equal to 0" do
+      valid = customer.valid?
+      expect(valid).must_equal true
+
+      customer.movies_checked_out_count = -1
+      customer.save
+      valid = customer.valid?
+      expect(valid).must_equal false
+    end
   end
 end
