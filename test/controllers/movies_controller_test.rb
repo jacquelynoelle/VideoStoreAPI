@@ -191,7 +191,7 @@ describe MoviesController do
     end
   end
 
-  describe "copies_out" do
+  describe "current" do
     it "returns empty array if no copies are out" do
 
       get movies_out_path(movie.id)

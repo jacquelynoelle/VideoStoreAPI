@@ -1,4 +1,12 @@
 class ApplicationController < ActionController::API
+  def current
+    rentals_list(:current_rentals)
+  end
+
+  def history
+    rentals_list(:historical_rentals)
+  end
+
   private
     def sort_and_paginate(list, params)
       list = sort_list(list, params)
