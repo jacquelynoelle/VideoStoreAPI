@@ -88,7 +88,7 @@ class MoviesController < ApplicationController
 
     def sort_list(list)
       if movie_params[:sort]
-        return list.order(movie_params[:sort] => :asc)
+        return list.sort_by{ |movie| movie[movie_params[:sort]] }
       else
         return list
       end

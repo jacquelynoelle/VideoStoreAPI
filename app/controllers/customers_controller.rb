@@ -54,7 +54,7 @@ class CustomersController < ApplicationController
 
     def sort_list(list)
       if customer_params[:sort]
-        return list.order(customer_params[:sort] => :asc)
+        return list.sort_by{ |customer| customer[customer_params[:sort]] }
       else
         return list
       end

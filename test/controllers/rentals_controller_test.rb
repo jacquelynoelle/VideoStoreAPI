@@ -133,5 +133,14 @@ describe RentalsController do
 
       expect(body.empty?).must_equal true
     end
+
+    it "can sort overdue movies and paginate and return specified page" do
+      get overdues_path, params: {sort: "title", n: 1, p: 2}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 0
+      expect(body.empty?).must_equal true
+    end
   end
 end

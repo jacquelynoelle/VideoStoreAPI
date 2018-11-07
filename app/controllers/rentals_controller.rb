@@ -63,7 +63,7 @@ class RentalsController < ApplicationController
 
     def sort_list(list)
       if rental_params[:sort]
-        return list.order(rental_params[:sort] => :asc)
+        return list.sort_by{ |rental| rental[rental_params[:sort]] }
       else
         return list
       end

@@ -242,5 +242,14 @@ describe MoviesController do
       expect(body.empty?).must_equal true
     end
 
+    it "can sort movie rental history and paginate and return specified page" do
+      get rental_history_path(id: id), params: {sort: "title", n: 1, p: 3}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 0
+      expect(body.empty?).must_equal true
+    end
+
   end
 end

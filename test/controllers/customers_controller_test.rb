@@ -176,5 +176,36 @@ describe CustomersController do
       expect(body).must_be_kind_of Array
       expect(body.empty?).must_equal true
     end
+
+    it "can sort customer history" do
+      movie = movies(:movie1)
+      customer = Customer.find_by(name: "Jane Doe")
+      rental = movie.rentals.find_by(customer_id: customer.id)
+
+      # check title sort
+      get customer_history_path(customer.id), params: {sort: "title"}
+
+      body = JSON.parse(response.body)
+
+      expect(body.first["title"]).must_equal (movie.title)
+
+      # checkout date sort
+      get customer_history_path(customer.id), params: {sort: "checkout_date"}
+
+      body = JSON.parse(response.body)
+
+      expect(Date.parse(body.first["checkout_date"])).must_equal Date.parse(rental.checkout_date.to_s)
+    end
+
+    it "can sort customer history and paginate and return specified page" do
+      customer = Customer.find_by(name: "Jane Doe")
+
+      get customer_history_path(customer.id), params: {sort: "title", n: 1, p: 3}
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 0
+      expect(body.empty?).must_equal true
+    end
   end
 end
