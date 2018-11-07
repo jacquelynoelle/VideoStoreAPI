@@ -1,5 +1,32 @@
 class ApplicationController < ActionController::API
-
   private
+    def sort_and_paginate(list, params)
+      list = sort_list(list, params)
+      list = paginate_list(list, params)
+      return list
+    end
 
+    def sort_list(list, params)
+      if params[:sort]
+        return list.sort_by{ |customer| customer[params[:sort]] }
+      else
+        return list
+      end
+    end
+
+    def paginate_list(list, params)
+      if params[:n] || params[:p]
+        if params[:n] && !params[:p]
+          params[:p] = 1
+        end
+
+        if params[:p] && !params[:n]
+          params[:n] = 10
+        end
+
+        return list.paginate(page: params[:p], per_page: params[:n])
+      else
+        return list
+      end
+    end
 end

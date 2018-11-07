@@ -6,8 +6,7 @@ class CustomersController < ApplicationController
   def index
     customers = Customer.all
 
-    customers = sort_list(customers)
-    customers = paginate_list(customers)
+    customers = sort_and_paginate(customers, customer_params)
 
     render json: customers.as_json(except: [:address, :city, :state, :created_at, :updated_at]), status: :ok
   end
@@ -23,8 +22,7 @@ class CustomersController < ApplicationController
       }
     end
 
-    list = sort_list(list)
-    list = paginate_list(list)
+    list = sort_and_paginate(list, customer_params)
 
     render json: list.as_json, status: :ok
   end
@@ -40,8 +38,7 @@ class CustomersController < ApplicationController
       }
     end
 
-    list = sort_list(list)
-    list = paginate_list(list)
+    list = sort_and_paginate(list, customer_params)
 
     render json: list.as_json, status: :ok
   end
@@ -50,29 +47,5 @@ class CustomersController < ApplicationController
 
     def customer_params
       params.permit(:sort, :n, :p)
-    end
-
-    def sort_list(list)
-      if customer_params[:sort]
-        return list.sort_by{ |customer| customer[customer_params[:sort]] }
-      else
-        return list
-      end
-    end
-
-    def paginate_list(list)
-      if customer_params[:n] || customer_params[:p]
-        if customer_params[:n] && !customer_params[:p]
-          customer_params[:p] = 1
-        end
-
-        if customer_params[:p] && !customer_params[:n]
-          customer_params[:n] = 10
-        end
-
-        return list.paginate(page: customer_params[:p], per_page: customer_params[:n])
-      else
-        return list
-      end
     end
 end
