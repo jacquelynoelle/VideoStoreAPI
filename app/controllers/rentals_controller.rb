@@ -49,6 +49,9 @@ class RentalsController < ApplicationController
       postal_code: overdue.customer.postal_code }
     end
 
+    list = sort_list(list)
+    list = paginate_list(list)
+
     render json: list.as_json, status: :ok
   end
 
@@ -56,5 +59,29 @@ class RentalsController < ApplicationController
 
     def rental_params
       params.permit(:movie_id, :customer_id, :id, :checkout_date, :due_date, :sort, :n, :p) #sort by n (number) or p (page) or both
+    end
+
+    def sort_list(list)
+      if rental_params[:sort]
+        return list.order(rental_params[:sort] => :asc)
+      else
+        return list
+      end
+    end
+
+    def paginate_list(list)
+      if rental_params[:n] || rental_params[:p]
+        if rental_params[:n] && !rental_params[:p]
+          rental_params[:p] = 1
+        end
+
+        if rental_params[:p] && !rental_params[:n]
+          rental_params[:n] = 10
+        end
+
+        return list.paginate(page: rental_params[:p], per_page: rental_params[:n])
+      else
+        return list
+      end
     end
 end

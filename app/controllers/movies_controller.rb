@@ -3,14 +3,8 @@ class MoviesController < ApplicationController
   def index
     movies = Movie.all
 
-    if movie_params[:sort]
-      movies = movies.order(movie_params[:sort] => :asc)
-    end
-
-    if movie_params[:n] || movie_params[:p]
-      query_check
-      movies = movies.paginate(page: movie_params[:p], per_page: movie_params[:n])
-    end
+    movies = sort_list(movies)
+    movies = paginate_list(movies)
 
     render json: movies.as_json(only: [:id, :title, :release_date]), status: :ok
   end
@@ -56,6 +50,9 @@ class MoviesController < ApplicationController
         }
       end
 
+      list = sort_list(list)
+      list = paginate_list(list)
+
       render json: list.as_json, status: :ok
     else
       render json: { message: "There are no copies currently out" }
@@ -76,23 +73,40 @@ class MoviesController < ApplicationController
         }
       end
     end
+
+    list = sort_list(list)
+    list = paginate_list(list)
+
     render json: list.as_json, status: :ok
   end
 
   private
 
-  def movie_params
-    params.permit(:title, :overview, :release_date, :inventory, :available_inventory, :sort, :n, :p)
-  end
-
-  def query_check
-    if movie_params[:n] && !movie_params[:p]
-      return movie_params[:p] = 1
+    def movie_params
+      params.permit(:title, :overview, :release_date, :inventory, :available_inventory, :sort, :n, :p)
     end
 
-    if movie_params[:p] && !movie_params[:n]
-      return movie_params[:n] = 10
+    def sort_list(list)
+      if movie_params[:sort]
+        return list.order(movie_params[:sort] => :asc)
+      else
+        return list
+      end
     end
-  end
 
+    def paginate_list(list)
+      if movie_params[:n] || movie_params[:p]
+        if movie_params[:n] && !movie_params[:p]
+          movie_params[:p] = 1
+        end
+
+        if movie_params[:p] && !movie_params[:n]
+          movie_params[:n] = 10
+        end
+
+        return list.paginate(page: movie_params[:p], per_page: movie_params[:n])
+      else
+        return list
+      end
+    end
 end
