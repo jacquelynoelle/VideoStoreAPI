@@ -1,0 +1,3 @@
+object @movie
+
+attributes :id

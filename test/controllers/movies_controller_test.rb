@@ -135,6 +135,7 @@ describe MoviesController do
     it "responds with a 404 message if no movie is found" do
       id = -1
       get movie_path(id)
+
       must_respond_with :not_found
     end
   end
@@ -228,7 +229,6 @@ describe MoviesController do
 
       body = JSON.parse(response.body)
 
-      expect(body).must_be_instance_of Array
       expect(body.count).must_equal 2
     end
 
