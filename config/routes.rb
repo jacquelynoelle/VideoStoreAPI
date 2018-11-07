@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get "/zomg", to: "customers#zomg", as: "zomg"
 
   get "/customers", to: "customers#index", as: "customers"
+  get "/customers/:id/current", to: "customers#current", as: "customer_current"
+  get "/customers/:id/history", to: "customers#history", as: "customer_history"
 
   get "/movies", to: "movies#index", as: "movies"
   get "/movies/:id", to: "movies#show", as: "movie"
