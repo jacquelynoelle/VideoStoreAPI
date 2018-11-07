@@ -192,23 +192,23 @@ describe MoviesController do
   end
 
   describe "copies_out" do
-    it "responds with a message if there are no copies of movie out" do
+    it "returns empty array if no copies are out" do
 
-      get movies_out_path(id: movie.id)
+      get movies_out_path(movie.id)
 
       body = JSON.parse(response.body)
 
-      expect(body["message"]).must_equal "There are no copies currently out"
+      expect(body.empty?).must_equal true
     end
 
     it "returns list of customers who currently checked out movie" do
       id = movies(:movie2).id
 
-      get movies_out_path(id: id)
+      get movies_out_path(id)
 
       body = JSON.parse(response.body)
 
-      expect(body.count).must_equal 1
+      expect(body.count).must_equal 2
       expect(body[0]["name"]).must_equal customers(:customer3).name
       expect(body[0]["customer_id"]).must_equal customers(:customer3).id
       expect(body[0]["checkout_date"]).must_equal rentals(:overdue_rental).checkout_date.strftime ("%Y-%m-%d")

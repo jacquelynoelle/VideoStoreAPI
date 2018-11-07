@@ -41,53 +41,58 @@ class MoviesController < ApplicationController
     #first check if the movie is even rented
     if movie.copies_out?
       rentals = movie.rentals
-      list = rentals.map do |rental|
-        if rental.checked_out #if the rentals are checked out, then #hash# it!
-          { customer_id: rental.customer_id,
-            checkout_date: rental.checkout_date,
-            due_date: rental.due_date,
-            name: rental.customer.name,
-            postal_code: rental.customer.postal_code
-          }
-        end
+
+      rentals = rentals.select do |rental|
+        rental.checked_out?
       end
+
+      list = rentals.map do |rental|
+        {
+          customer_id: rental.customer_id,
+          checkout_date: rental.checkout_date,
+          due_date: rental.due_date,
+          name: rental.customer.name,
+          postal_code: rental.customer.postal_code
+        }
+      end
+
       render json: list.as_json, status: :ok
     else
       render json: { message: "There are no copies currently out" }
     end
   end
 
-    def history
-      movie = Movie.find_by(id: params[:id])
-      rentals = movie.rentals
+  def history
+    movie = Movie.find_by(id: params[:id])
+    rentals = movie.rentals
 
-      list = rentals.map do |rental|
-        if !rental.checked_out
-          { customer_id: rental.customer_id,
-            checkout_date: rental.checkout_date,
-            due_date: rental.due_date,
-            name: rental.customer.name,
-            postal_code: rental.customer.postal_code
-          }
-        end
+    list = rentals.map do |rental|
+      if !rental.checked_out
+        { customer_id: rental.customer_id,
+          checkout_date: rental.checkout_date,
+          due_date: rental.due_date,
+          name: rental.customer.name,
+          postal_code: rental.customer.postal_code
+        }
       end
-      render json: list.as_json, status: :ok
     end
+    render json: list.as_json, status: :ok
+  end
 
   private
 
-    def movie_params
-      params.permit(:title, :overview, :release_date, :inventory, :available_inventory, :sort, :n, :p)
+  def movie_params
+    params.permit(:title, :overview, :release_date, :inventory, :available_inventory, :sort, :n, :p)
+  end
+
+  def query_check
+    if movie_params[:n] && !movie_params[:p]
+      return movie_params[:p] = 1
     end
 
-    def query_check
-      if movie_params[:n] && !movie_params[:p]
-        return movie_params[:p] = 1
-      end
-
-      if movie_params[:p] && !movie_params[:n]
-        return movie_params[:n] = 10
-      end
+    if movie_params[:p] && !movie_params[:n]
+      return movie_params[:n] = 10
     end
+  end
 
 end

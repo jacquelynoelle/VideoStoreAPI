@@ -4,7 +4,7 @@ movie1:
   title: "Lord of the Rings"
   overview: "The entire trilogy."
   release_date: 2001-12-24
-  inventory: 3
+  inventory: 4
   available_inventory: 3
 
 movie2:

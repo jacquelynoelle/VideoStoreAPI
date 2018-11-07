@@ -111,10 +111,10 @@ describe Movie do
 
     it "wont change available_inventory if it's currently 0" do
       expect {
-        2.times do
+        3.times do
           movie.checkout?
         end
-      }.must_change 'movie.available_inventory', -2
+      }.must_change 'movie.available_inventory', -3
 
       expect {
         expect(movie.checkout?).must_equal false
@@ -142,7 +142,7 @@ describe Movie do
 
   describe "copies_out?" do
     it "returns false if all copies are in-house" do
-      movie.available_inventory = 3
+      movie.available_inventory = 4
       movie.save
 
       expect(movie.copies_out?).must_equal false
