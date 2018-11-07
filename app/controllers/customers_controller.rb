@@ -6,9 +6,10 @@ class CustomersController < ApplicationController
   def index
     customers = Customer.all
 
-    customers = sort_and_paginate(customers, customer_params)
+    @customers = sort_and_paginate(customers, customer_params)
 
-    render json: customers.as_json(except: [:address, :city, :state, :created_at, :updated_at]), status: :ok
+    # render json: customers.as_json(except: [:address, :city, :state, :created_at, :updated_at]), status: :ok
+    render :index, status: :ok
   end
 
   private
