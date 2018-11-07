@@ -6,19 +6,27 @@ class RentalsController < ApplicationController
     rental = Rental.new(rental_params)
 
     if rental.checkout?
-      render json: rental.as_json(except: [:created_at, :updated_at]), status: :ok
+      render json: rental.as_json(except: [:id, :created_at, :updated_at]), status: :ok
     else
       render json: { errors: rental.errors.messages }, status: :bad_request
     end
   end
 
   def checkin
-    rental = Rental.find_by(id: params[:id].to_i)
+    rentals = Rental.all.select do |rental|
+      rental.movie_id == params[:movie_id].to_i && rental.customer_id == params[:customer_id].to_i
+    end
+
+    if rentals.length >= 1
+      rental = rentals.sort_by { |rental| rental.due_date }.first
+    else
+      rental = nil
+    end
 
     if rental.nil?
       render json: { message: "Rental not found" }, status: :not_found
     elsif rental.checkin?
-      render json: rental.as_json(except: [:created_at, :updated_at]), status: :ok
+      render json: rental.as_json(except: [:id, :created_at, :updated_at]), status: :ok
     else
       render json: { message: "Could not check-in movie" }, status: :bad_request
     end
