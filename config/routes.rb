@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get "/movies", to: "movies#index", as: "movies"
   get "/movies/:id", to: "movies#show", as: "movie"
+  get "/movies/:id/current", to: "movies#copies_out", as: "movies_out"
   get "/movies/:id/history", to: "movies#history", as: "rental_history"
   post "/movies", to: "movies#create"
 

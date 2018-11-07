@@ -25,4 +25,13 @@ class Movie < ApplicationRecord
       return false
     end
   end
+
+  def copies_out? #need to check inventory of product FIRST
+    #returns false if avail inv and inv is equal, true if, not, thus copies are out
+    return self.available_inventory == self.inventory ? false : true
+  end
+
+  # def repeat_rental?
+  #
+  # end
 end

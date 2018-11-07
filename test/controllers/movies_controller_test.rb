@@ -190,4 +190,57 @@ describe MoviesController do
       must_respond_with :bad_request
     end
   end
+
+  describe "copies_out" do
+    it "responds with a message if there are no copies of movie out" do
+
+      get movies_out_path(id: movie.id)
+
+      body = JSON.parse(response.body)
+
+      expect(body["message"]).must_equal "There are no copies currently out"
+    end
+
+    it "returns list of customers who currently checked out movie" do
+      id = movies(:movie2).id
+
+      get movies_out_path(id: id)
+
+      body = JSON.parse(response.body)
+
+      expect(body.count).must_equal 1
+      expect(body[0]["name"]).must_equal customers(:customer3).name
+      expect(body[0]["customer_id"]).must_equal customers(:customer3).id
+      expect(body[0]["checkout_date"]).must_equal rentals(:overdue_rental).checkout_date.strftime ("%Y-%m-%d")
+    end
+
+
+  end
+
+  describe "history" do
+    let (:id) { movies(:movie1).id }
+
+    it "returns list of customers whose rental history includes movie" do
+      new_rental = Rental.new(checkout_date: Date.parse("2018-10-05"), due_date: Date.parse("2018-10-12"), customer: customers(:customer2), movie: movies(:movie1), checked_out: false)
+      new_rental.save
+
+      get rental_history_path(id: id)
+
+      body = JSON.parse(response.body)
+
+      expect(body).must_be_instance_of Array
+      expect(body.count).must_equal 2
+    end
+
+    it "returns empty array if the movie has no rental history" do
+      id = movies(:movie3).id
+
+      get rental_history_path(id: id)
+
+      body = JSON.parse(response.body)
+
+      expect(body.empty?).must_equal true
+    end
+
+  end
 end
