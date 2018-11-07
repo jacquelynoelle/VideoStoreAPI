@@ -8,7 +8,6 @@ class CustomersController < ApplicationController
 
     @customers = sort_and_paginate(customers, customer_params)
 
-    # render json: customers.as_json(except: [:address, :city, :state, :created_at, :updated_at]), status: :ok
     render :index, status: :ok
   end
 
@@ -21,16 +20,10 @@ class CustomersController < ApplicationController
     def rentals_list(criteria)
       customer = Customer.find_by(id: params[:id].to_i)
 
-      list = customer.send(criteria).map do |rental|
-        {
-          checkout_date: rental.checkout_date,
-          due_date: rental.due_date,
-          title: rental.movie.title
-        }
-      end
+      list = customer.send(criteria)
 
-      list = sort_and_paginate(list, customer_params)
+      @list = sort_and_paginate(list, customer_params)
 
-      render json: list.as_json, status: :ok
+      render :rentals, status: :ok
     end
 end

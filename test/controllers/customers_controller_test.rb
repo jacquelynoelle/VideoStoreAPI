@@ -157,7 +157,7 @@ describe CustomersController do
 
       expect(body).must_be_kind_of Array
       expect(body.count).must_equal 1
-
+      
       expect(body.first["title"]).must_equal movies(:movie1)["title"]
 
       movie_id = Movie.find_by(title: body.first["title"]).id

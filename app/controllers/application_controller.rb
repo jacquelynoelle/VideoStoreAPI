@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
 
     def sort_list(list, params)
       if params[:sort]
-        return list.sort_by{ |customer| customer[params[:sort]] }
+        return list.sort_by{ |item| item[params[:sort]] }
       else
         return list
       end
