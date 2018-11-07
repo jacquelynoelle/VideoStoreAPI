@@ -32,7 +32,11 @@ class ApplicationController < ActionController::API
           params[:n] = 10
         end
 
-        return list.paginate(page: params[:p], per_page: params[:n])
+        if params[:p].to_i > 0
+          return list.paginate(page: params[:p].to_i, per_page: params[:n].to_i)
+        else
+          return []
+        end
       else
         return list
       end
