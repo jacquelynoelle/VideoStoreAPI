@@ -139,17 +139,4 @@ describe Movie do
       }.wont_change 'movie.available_inventory'
     end
   end
-
-  describe "copies_out?" do
-    it "returns false if all copies are in-house" do
-      movie.available_inventory = 4
-      movie.save
-
-      expect(movie.copies_out?).must_equal false
-    end
-
-    it "returns true if there are copies out" do
-      expect(movie.copies_out?).must_equal true
-    end
-  end
 end
