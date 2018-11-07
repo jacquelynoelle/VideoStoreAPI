@@ -105,7 +105,7 @@ describe CustomersController do
   describe "current" do
     it "is a real working route and returns JSON" do
       # Act
-      get customer_current_path(Customer.first.id)
+      get customer_current_path(Customer.find_by(name: "Jane Doe").id)
 
       # Assert
       expect(response.header['Content-Type']).must_include 'json'
@@ -113,21 +113,25 @@ describe CustomersController do
     end
 
     it "returns an array of a customer's checked out rentals" do
-      get customer_current_path(Customer.first.id)
+      get customer_current_path(Customer.find_by(name: "Jane Doe").id)
 
       body = JSON.parse(response.body)
 
       expect(body).must_be_kind_of Array
       expect(body.count).must_equal 1
-      expect(body.first["movie_id"]).must_equal movies(:movie2)["id"]
-      expect(body.first["checked_out"]).must_equal true
+
+      expect(body.first["title"]).must_equal movies(:movie2)["title"]
+
+      movie_id = Movie.find_by(title: body.first["title"]).id
+
+      expect(Rental.find_by(movie_id: movie_id).checked_out).must_equal true
     end
 
     it "returns an empty array if a customer has no checked out rentals" do
       rentals(:customer1checkedout).checked_out = false
       rentals(:customer1checkedout).save
 
-      get customer_current_path(Customer.first.id)
+      get customer_current_path(Customer.find_by(name: "Jane Doe").id)
 
       body = JSON.parse(response.body)
 
@@ -139,7 +143,7 @@ describe CustomersController do
   describe "history" do
     it "is a real working route and returns JSON" do
       # Act
-      get customer_history_path(Customer.first.id)
+      get customer_history_path(Customer.find_by(name: "Jane Doe").id)
 
       # Assert
       expect(response.header['Content-Type']).must_include 'json'
@@ -147,21 +151,25 @@ describe CustomersController do
     end
 
     it "returns an array of a customer's checked in rentals" do
-      get customer_current_path(Customer.first.id)
+      get customer_history_path(Customer.find_by(name: "Jane Doe").id)
 
       body = JSON.parse(response.body)
 
       expect(body).must_be_kind_of Array
       expect(body.count).must_equal 1
-      expect(body.first["movie_id"]).must_equal movies(:movie1)["id"]
-      expect(body.first["checked_out"]).must_equal false
+
+      expect(body.first["title"]).must_equal movies(:movie1)["title"]
+
+      movie_id = Movie.find_by(title: body.first["title"]).id
+
+      expect(Rental.find_by(movie_id: movie_id).checked_out).must_equal false
     end
 
     it "returns an empty array if a customer has no checked in rentals" do
       rentals(:rental1).checked_out = true
       rentals(:rental1).save
 
-      get customer_current_path(Customer.first.id)
+      get customer_history_path(Customer.find_by(name: "Jane Doe").id)
 
       body = JSON.parse(response.body)
 
